@@ -1,0 +1,1 @@
+powershell -ExecutionPolicy Bypass -File .\open-processes.ps1
