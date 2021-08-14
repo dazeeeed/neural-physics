@@ -13,7 +13,7 @@ class Vectors():
 
     def generate_vector(self):
         """Generate random vector of casettes configuration."""
-        return np.random.randint(low=1, high=10, size=31)
+        return np.random.randint(low=1, high=10, size=32)
 
     def generate_vector_data(self):
         """Generate array of random vectors of casettes configuration."""
@@ -32,7 +32,7 @@ def main():
     ----------
     -p, --prefix STRING : valid prefix for filenames generated in data directory.
 
-    -n, --number INTEGER : generate core configurations based on the input file, defaults to vectors.csv.
+    -n, --number INTEGER : generate core configurations based on the input number, defaults to vectors.csv.
 
     """
     do_write = True

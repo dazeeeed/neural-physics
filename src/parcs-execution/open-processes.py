@@ -11,14 +11,21 @@ def main():
 
     # start all programs
     processes = []
+    # =============================================================
+    # First argument needs to be starting number of configuration.
+    # Second argument is a number of the last - 1 config being used.
+    # =============================================================
 
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         print("Wrong arguments. Exiting...")
         sys.exit(1)
 
-    for i in range( int(sys.argv[1]) ):
+    for i in range( int(sys.argv[1]), int(sys.argv[2]) ):
         os.chdir(config_path(data_path, i))
-        processes.append(subprocess.Popen([parcs_program_path, 'BEAVRS_20_HFP_MULTI_5_2018.INP'], bufsize=-1))
+        # TODO : get it work
+        startupinfo = subprocess.STARTUPINFO()
+        # startupinfo.dwFlags |= subprocess.CREATE_NEW_CONSOLE
+        processes.append(subprocess.Popen([parcs_program_path, 'BEAVRS_20_HFP_MULTI_5_2018.INP'], bufsize=-1, startupinfo=startupinfo))
         
     # wait
     for process in processes:

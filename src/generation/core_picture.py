@@ -8,7 +8,7 @@ def read_core_config(datapath, filename):
 
 def main():
     current_path = os.path.dirname(os.path.realpath(__file__))
-    data_path = os.path.abspath(os.path.join(current_path, '..', 'data'))
+    data_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data'))
     core_configs = read_core_config(data_path, "core_configurations.csv")
 
     fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
