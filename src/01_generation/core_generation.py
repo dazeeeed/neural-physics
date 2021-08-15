@@ -109,7 +109,7 @@ if __name__ == '__main__':
     input_not_specified = True
 
     generation_path = os.path.dirname(os.path.realpath(__file__))
-    data_path = os.path.abspath(os.path.join(generation_path, '../..', 'data'))
+    data_path = os.path.abspath(os.path.join(generation_path, '..', '..', 'data'))
     try:
         os.stat(data_path)
     except:
