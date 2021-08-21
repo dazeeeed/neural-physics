@@ -66,10 +66,9 @@ def main():
                 sys.exit(1)
 
     vectors.filepath = data_path + '/' + vectors.prefix + "vectors.csv"
-
-    do_write = check_overwrite(vectors.filepath)
+    do_write_vectors = check_overwrite(vectors.filepath)
     
-    if do_write:
+    if do_write_vectors:
         vectors.save(separator=',')
         print("File saved!")
     else:
