@@ -27,7 +27,7 @@ def main():
     cycle_lengths = create_cycle_length_dict_with_casette_as_key(load_npy(cycle_lengths_path))
 
     new_features = original_training_data.iloc[:, :32].replace(cycle_lengths)
-    new_training_data = pd.concat([new_features, original_training_data.iloc[:, 33:]], axis='columns')
+    new_training_data = pd.concat([new_features, original_training_data.iloc[:, 32:]], axis='columns')
 
     do_write_training_file = check_overwrite(new_training_data_path)
 
