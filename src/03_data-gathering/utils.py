@@ -1,5 +1,6 @@
 import os
 import sys
+import numpy as np
 
 
 def check_overwrite(path_name=None):
@@ -30,3 +31,21 @@ def index_to_days_interpolation(x):
         return 151 + 10 * (x - 9)
     else:
         return 461.0 + 5 * (x - 40)
+
+
+def do_files_exist(*args):
+    for filepath in args:
+        if not os.path.exists(filepath):
+            print("File {} does not exist! Exiting...".format(filepath))
+            return False
+    return True
+
+
+def load_npy(filepath):
+    file_content = []
+    try:
+        with open(filepath, 'rb') as f:
+            file_content = np.load(f)
+    except FileNotFoundError:
+        print("No such file or directory as " + filepath)
+    return file_content

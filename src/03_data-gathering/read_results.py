@@ -54,7 +54,7 @@ class FileReader:
 
         return self._keff
 
-    def get_PPF_matrix(self):
+    def get_ppf_matrix(self):
         PPF = self.data[4].values
         self._PPF = np.reshape(PPF, (-1, 69))
         return self._PPF
@@ -113,10 +113,10 @@ def main():
     fr = FileReader(number_of_configs_to_read)
     fr.read_files(configs_path)
     keff_matrix = fr.get_keff_matrix()
-    ppf_matrix = fr.get_PPF_matrix()
+    ppf_matrix = fr.get_ppf_matrix()
 
-    fr.save(keff_matrix, current_path, 'keff.npy')
-    fr.save(ppf_matrix, current_path, 'ppf.npy')
+    fr.save(keff_matrix, current_path, str(prefix) + 'keff.npy')
+    fr.save(ppf_matrix, current_path, str(prefix) + 'ppf.npy')
 
 
 if __name__ == '__main__':

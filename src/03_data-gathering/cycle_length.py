@@ -2,7 +2,7 @@ import time, os
 import numpy as np
 from utils import check_overwrite, index_to_days_interpolation
 import sys
-
+import getopt
 
 class CycleLength:
     def __init__(self):
@@ -115,11 +115,26 @@ class CycleLength:
 def main():
     current_path = os.path.dirname(os.path.realpath(__file__))
     matrix_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data', 'numpy-arrays'))
+    prefix = ''
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'p:', ["prefix="])
+    except getopt.GetoptError:
+        print('Error, check format of arguments...')
+        sys.exit(1)
+
+    if len(args) > len(opts):
+        print("Wrong arguments! Exiting...")
+        sys.exit(1)
+
+    for opt, arg in opts:
+        if opt in ('-p', '--prefix'):
+            prefix = arg
 
     cl = CycleLength()
-    cl.load_matrix(os.path.join(matrix_path, 'keff.npy'))
+    cl.load_matrix(os.path.join(matrix_path, prefix + 'keff.npy'))
     cl.calculate_lengths()
-    cl.save_lengths(os.path.join(matrix_path, 'cycle_lengths.npy'))
+    cl.save_lengths(os.path.join(matrix_path, prefix + 'cycle_lengths.npy'))
 
 
 if __name__ == '__main__':

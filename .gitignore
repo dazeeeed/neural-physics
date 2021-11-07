@@ -1,6 +1,8 @@
 # Folders
 data/PARCS-configs/*
+data/one_ten_PARCS-configs/*
 data/numpy-arrays/
+TODO list.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -41,7 +43,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Unit test.py / coverage reports
 htmlcov/
 .tox/
 .nox/

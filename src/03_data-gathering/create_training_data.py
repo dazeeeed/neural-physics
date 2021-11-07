@@ -1,20 +1,11 @@
+import getopt
 import os
 import sys
 import time
 
 import numpy as np
 import pandas as pd
-from utils import check_overwrite
-
-
-def load_npy(filepath):
-    file_content = []
-    try:
-        with open(filepath, 'rb') as f:
-            file_content = np.load(f)
-    except FileNotFoundError:
-        print("No such file or directory as " + filepath)
-    return file_content
+from utils import check_overwrite, do_files_exist, load_npy
 
 
 def create_big_array(vector_data, keff_matrix, ppf_matrix, cycle_lengths):
@@ -59,16 +50,35 @@ def main():
         "ppf_start", "ppf_max", "ppf_end",
         "cycle_length_in_days"
     ]
+    prefix = ''
 
-    vector_data = pd.read_csv(os.path.join(data_path, 'vectors.csv'), sep=',', header=None)
-    keff_matrix = pd.DataFrame(load_npy(os.path.join(data_path, 'numpy-arrays', 'keff.npy')))
-    ppf_matrix = pd.DataFrame(load_npy(os.path.join(data_path, 'numpy-arrays', 'ppf.npy')))
-    cycle_lengths = pd.DataFrame(load_npy(os.path.join(data_path, 'numpy-arrays', 'cycle_lengths.npy')))
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'p:', ["prefix="])
+    except getopt.GetoptError:
+        print('Error, check format of arguments...')
+        sys.exit(1)
+
+    if len(args) > len(opts):
+        print("Wrong arguments! Exiting...")
+        sys.exit(1)
+
+    for opt, arg in opts:
+        if opt in ('-p', '--prefix'):
+            prefix = arg
+
+    if not do_files_exist(prefix + 'vectors.csv', prefix + 'keff.npy', prefix + 'ppf.npy',
+                                     prefix + 'cycle_lengths.npy'):
+        sys.exit(1)
+
+    vector_data = pd.read_csv(os.path.join(data_path, prefix + 'vectors.csv'), sep=',', header=None)
+    keff_matrix = pd.DataFrame(load_npy(os.path.join(data_path, 'numpy-arrays', prefix + 'keff.npy')))
+    ppf_matrix = pd.DataFrame(load_npy(os.path.join(data_path, 'numpy-arrays', prefix + 'ppf.npy')))
+    cycle_lengths = pd.DataFrame(load_npy(os.path.join(data_path, 'numpy-arrays', prefix + 'cycle_lengths.npy')))
 
     big_array = create_big_array(vector_data, keff_matrix, ppf_matrix, cycle_lengths)
     big_array.columns = headers
 
-    training_file_datapath = os.path.join(data_path, 'TRAINING_DATA.csv')
+    training_file_datapath = os.path.join(data_path, prefix + 'TRAINING_DATA.csv')
     do_write_training_file = check_overwrite(training_file_datapath)
 
     if do_write_training_file:

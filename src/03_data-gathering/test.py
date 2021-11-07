@@ -2,6 +2,7 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 from utils import index_to_days_interpolation
+import matplotlib.axes._axes as axes
 
 cycle = [
     1.0833709999999999, 1.083217, 1.081923, 1.081508, 1.0792899999999999,
@@ -100,8 +101,18 @@ print(a)
 # y = [index_to_days_interpolation(x) for x in np.arange(0, 70, 1)]
 
 # plt.plot(np.arange(0, 70, 1), y)
-# plt.scatter(days_map.keys(), days_map.values())
-# plt.show()
+
+font = {'size': 15}
+
+plt.rc('font', **font)
+
+fig, ax = plt.subplots()
+ax.scatter(index_to_days_map.keys(), index_to_days_map.values(), marker='+')
+ax.set_ylabel("Days")
+ax.set_xlabel("Index")
+
+fig.tight_layout()
+plt.savefig('index_to_days.svg')
 
 def get_cycle_length():
     # cycle = np.array([

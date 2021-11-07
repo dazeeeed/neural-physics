@@ -7,7 +7,7 @@ data_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data'))
 parcs_program_path = os.path.abspath(os.path.join(data_path, '..', '..', 'PARCS', 'p320mXX.exe'))
 
 def config_path(data_path, i):
-    return os.path.abspath(os.path.join(data_path, 'PARCS-configs', 'config' + str(i)))
+    return os.path.abspath(os.path.join(data_path, 'one_ten_PARCS-configs', 'config' + str(i)))
 
 def worker():
     os.system(" ".join([parcs_program_path, 'BEAVRS_20_HFP_MULTI_5_2018.INP']))
