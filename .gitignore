@@ -2,6 +2,7 @@
 data/PARCS-configs/*
 data/one_ten_PARCS-configs/*
 data/numpy-arrays/
+data/logs/
 TODO list.txt
 
 # Byte-compiled / optimized / DLL files
