@@ -15,6 +15,8 @@ data_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data'))
 LOG_DIR = os.path.join(data_path, 'logs', 'hparam_tuning_2021-11-22-22-16-58')
 
 event_path = os.path.join(LOG_DIR, 'run-0-adam-60-15', 'validation', 'events.out.tfevents.1637615868.DESKTOP-B717F5U.10160.4.v2')
+# event_path = os.path.join(LOG_DIR, 'run-0-adam-60-15', 'train', 'events.out.tfevents.1637615868.DESKTOP-B717F5U.10160.4.v2')
+
 listOutput = (glob.glob("..\\..\\data\\logs\\hparam_tuning_2021-11-15-14-03-33\\run-0-adam-50-1e-05\\*.9.v2"))
 
 listDF = []

@@ -65,23 +65,26 @@ size_guidance = {
 
 
 class Run:
-    def __init__(self, path):
+    def __init__(self, path, does_validation_exist):
         self._path = path
         self._name = re.search("(run-.*)", path).group(0)
         # values = re.search("run-(\\d+)-(\\w+)-(\\d+)-(0.\\d+)", self._name) # for dropout name
-        values = re.search("run-(\\d+)-(\\w+)-(\\d+)-(\\d+)", self._name) # for NH1, NH2 name
-        try:
-            values[0]
-        except TypeError:
-            print("You probably have wrong filenames.")
-
-
-        self._run_number = values[0]
-        self._optimizer = values[1]
-        self._num_units1 = values[2]
-        self._dropout_rate = values[3]
-        self._tensor_labels = []
+        # values = re.search("run-(\\d+)-(\\w+)-(\\d+)-(\\d+)", self._name) # for NH1, NH2 name
+        # values = re.search("run-(\\d+)-(\\w+)-(\\d+)-(\\d+)-(\\w+)", self._name) # for NH1, NH2, activation name
+        #
+        # try:
+        #     values[4]
+        # except TypeError:
+        #     print("You probably have wrong filenames.")
+        #
+        # self._run_number = values[0]
+        # self._optimizer = values[1]
+        # self._num_units1 = values[2]
+        # self._dropout_rate = values[3]
+        # self._activation = "unknown" | values[4]
         self._data_dict = {}
+        self._data_dict_val = {}
+        self._does_validation_exist = does_validation_exist
 
     def __str__(self):
         # return "Name: {}\nWall time: {}\nStep: {}\nValue: {}\n".format(self.get_name())
@@ -90,8 +93,8 @@ class Run:
     def get_name(self):
         return self._name
 
-    def parse_progress(self):
-        event_acc = EventAccumulator(self._path,
+    def parse_progress(self, suffix=''):
+        event_acc = EventAccumulator(os.path.join(self._path, suffix),
                                      size_guidance=size_guidance,
                                      compression_bps=None,
                                      purge_orphaned_data=False)
@@ -99,13 +102,25 @@ class Run:
         tags = event_acc.Tags()
         # print(tags)
 
-        self._tensors_labels = event_acc.Tags()['tensors']
+        tensors_labels = event_acc.Tags()['tensors']
         labels_to_remove = ['_hparams_/session_start_info', '_hparams_/session_end_info']
-        for value in labels_to_remove:
-            if value in self._tensors_labels:
-                self._tensors_labels.remove(value)
 
-        for tensors_label in self._tensors_labels:
+        if suffix == 'validation':
+            for tensors_label in tensors_labels:
+                self._data_dict_val[tensors_label] = TensorLabelElement()
+                tensor_events = event_acc.Tensors(tensors_label)
+
+                for tensor_event in tensor_events:
+                    self._data_dict_val[tensors_label].append_wall_time(tensor_event[0])
+                    self._data_dict_val[tensors_label].append_step(tensor_event[1])
+                    self._data_dict_val[tensors_label].append_value(tensor_event[2])
+            return None
+
+        for value in labels_to_remove:
+            if value in tensors_labels:
+                tensors_labels.remove(value)
+
+        for tensors_label in tensors_labels:
             self._data_dict[tensors_label] = TensorLabelElement()
             tensor_events = event_acc.Tensors(tensors_label)
 
@@ -114,8 +129,19 @@ class Run:
                 self._data_dict[tensors_label].append_step(tensor_event[1])
                 self._data_dict[tensors_label].append_value(tensor_event[2])
 
-    def get_data(self):
+    def parse_events(self):
+        self.parse_progress()
+        if self._does_validation_exist:
+            self.parse_progress(suffix='validation')
+
+    def get_train_data(self):
         return self._data_dict
+
+    def get_val_data(self):
+        return self._data_dict_val
+
+    def does_validation_exist(self):
+        return self._does_validation_exist
 
 
 class TensorLabelElement:
@@ -156,7 +182,6 @@ def smoothen(array, precision):
     -------
     np.array - smoothed array
     """
-
     smoothed = np.zeros(shape=(len(array)))
     for i, value in enumerate(array):
         if i < precision or i > len(array) - precision - 1:
@@ -171,7 +196,7 @@ def smoothen(array, precision):
 def main():
     current_path = os.path.dirname(os.path.realpath("__file__"))
     data_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data'))
-    LOG_DIR = os.path.join(data_path, 'logs', 'hparam_tuning_2021-11-22-22-16-58')
+    LOG_DIR = os.path.join(data_path, 'logs', 'hparam_tuning_2021-11-23-17-43-59')
 
     run_paths = glob.glob(LOG_DIR + "/run*")
 
@@ -179,20 +204,32 @@ def main():
 
     fig, ax = plt.subplots()
     for run_path in run_paths:
-        run = Run(run_path)
-        run.parse_progress()
+        run = Run(run_path, os.path.exists(os.path.join(run_path, 'validation')))
+        run.parse_events()
+        # run.parse_progress()
         runs.append(run)
 
-    which_plot = ['batch_loss', 'batch_mean_squared_error', 'batch_mean_absolute_error'][1]
+    which_train_plot = ['batch_loss', 'batch_mean_squared_error', 'batch_mean_absolute_error'][1]
+    which_val_plot = ['evaluation_loss_vs_iterations', 'evaluation_mean_squared_error_vs_iterations',
+                      'evaluation_mean_absolute_error_vs_iterations', 'epoch_loss',
+                      'epoch_mean_squared_error', 'epoch_mean_absolute_error'][0]
 
     for run in runs:
-        ax.plot(run.get_data().get(which_plot).get_steps(),
-                smoothen(run.get_data().get(which_plot).get_values(), 25),
-                label=run.get_name())
+        # ax.plot(run.get_train_data().get(which_train_plot).get_steps(),
+        #         smoothen(run.get_train_data().get(which_train_plot).get_values(), 25),
+        #         label=run.get_name())
+        if run.does_validation_exist():
+            ax.plot(run.get_val_data().get(which_val_plot).get_steps(),
+                    run.get_val_data().get(which_val_plot).get_values(),
+                    label=run.get_name() + " validation")
         ax.legend()
-        plt.title(which_plot)
+        plt.title(which_train_plot)
 
     # ax.set_yscale('log')
+    ax.set_ylim(0.4, 1)
+    ax.set_ylabel('Mean Squared Error')
+    ax.set_xlabel('Batch')
+    plt.savefig(os.path.join(data_path, 'graphics', 'batch_mse.svg'))
     plt.show()
 
 
