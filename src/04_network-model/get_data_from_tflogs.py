@@ -5,6 +5,8 @@ from tensorboard.backend.event_processing import tag_types
 import glob
 import struct
 import re
+import matplotlib
+matplotlib.rcParams.update({'font.size': 13})
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -196,13 +198,14 @@ def smoothen(array, precision):
 def main():
     current_path = os.path.dirname(os.path.realpath("__file__"))
     data_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data'))
-    LOG_DIR = os.path.join(data_path, 'logs', 'hparam_tuning_2021-11-23-17-43-59')
+    LOG_DIR = os.path.join(data_path, 'logs', 'hparam_tuning_2021-11-24-23-22-58')
 
     run_paths = glob.glob(LOG_DIR + "/run*")
 
     runs = []
 
     fig, ax = plt.subplots()
+    fig.set_size_inches(10, 7, forward=True)
     for run_path in run_paths:
         run = Run(run_path, os.path.exists(os.path.join(run_path, 'validation')))
         run.parse_events()
@@ -215,21 +218,24 @@ def main():
                       'epoch_mean_squared_error', 'epoch_mean_absolute_error'][0]
 
     for run in runs:
-        # ax.plot(run.get_train_data().get(which_train_plot).get_steps(),
-        #         smoothen(run.get_train_data().get(which_train_plot).get_values(), 25),
-        #         label=run.get_name())
+        ax.plot(run.get_train_data().get(which_train_plot).get_steps(),
+                smoothen(run.get_train_data().get(which_train_plot).get_values(), 25),
+                label=run.get_name())
         if run.does_validation_exist():
             ax.plot(run.get_val_data().get(which_val_plot).get_steps(),
                     run.get_val_data().get(which_val_plot).get_values(),
-                    label=run.get_name() + " validation")
+                    label=run.get_name() + " validation",
+                    ls='--')
         ax.legend()
-        plt.title(which_train_plot)
+        # plt.title(which_train_plot)
 
     # ax.set_yscale('log')
-    ax.set_ylim(0.4, 1)
+    ax.set_ylim(0.15, 0.26)
     ax.set_ylabel('Mean Squared Error')
     ax.set_xlabel('Batch')
-    plt.savefig(os.path.join(data_path, 'graphics', 'batch_mse.svg'))
+    ax.tick_params(direction="in")
+    fig.tight_layout()
+    plt.savefig(os.path.join(data_path, 'graphics', 'batch_mse.png'), dpi=300)
     plt.show()
 
 
@@ -237,42 +243,3 @@ if __name__ == '__main__':
     start_time = time.time()
     main()
     print("--- %s seconds ---" % (time.time() - start_time))
-
-# def parse_progress(path):
-#     event_acc = EventAccumulator(path)
-#     event_acc.Reload()
-#
-#     # Show all tags in the log file
-#     tags = event_acc.Tags()
-#     # print(tags)
-#
-#     tensors_labels = event_acc.Tags()['tensors']
-#     tensors_labels.remove('_hparams_/session_start_info')
-#     tensors_labels.remove('_hparams_/session_end_info')
-#     print(tensors_labels)
-#     # tensors = event_acc.Tensors('batch_loss')
-#     tensors = event_acc.Tensors('batch_mean_squared_error')
-#
-#
-#     wall_time, step, value = [], [], []
-#     for tensor in tensors:
-#         wall_time.append(tensor[0])
-#         step.append(tensor[1])
-#         tensor_proto = tensor[2]
-#         binary_val = tensor_proto.tensor_content
-#         decimal_val = struct.unpack('f', binary_val)[0]
-#         value.append(decimal_val)
-
-
-# plt.plot(step, value)
-# plt.show()
-# runtimes_scalar = event_acc.Scalars('runtime_ms')
-# runtimes = [runtimes_scalar[i].value for i in range(len(runtimes_scalar))]
-#
-# loss_scalar = event_acc.Scalars('loss')
-# loss = [loss_scalar[i].value for i in range(len(loss_scalar))]
-# assert len(runtimes) == len(loss)
-
-# return 0
-
-# parse_progress(run_paths[0])
