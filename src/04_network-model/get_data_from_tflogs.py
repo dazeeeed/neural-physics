@@ -6,7 +6,20 @@ import glob
 import struct
 import re
 import matplotlib
-matplotlib.rcParams.update({'font.size': 13})
+from matplotlib.font_manager import FontProperties
+
+font = {'family': 'Arial',
+        'weight': 'medium',
+        'size': 15,
+        'style': 'normal'}
+
+matplotlib.rcParams['mathtext.fontset'] = 'custom'
+matplotlib.rcParams['mathtext.rm'] = 'Arial'
+matplotlib.rcParams['mathtext.it'] = 'Arial'
+
+matplotlib.rc('font', **font)
+matplotlib.rc('text', usetex=False)
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -198,14 +211,17 @@ def smoothen(array, precision):
 def main():
     current_path = os.path.dirname(os.path.realpath("__file__"))
     data_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data'))
-    LOG_DIR = os.path.join(data_path, 'logs', 'hparam_tuning_2021-11-24-23-22-58')
+
+    hparam_tuning_name = 'hparam_tuning_2022-01-27-12-47-25'
+    LOG_DIR = os.path.join(data_path, 'logs', hparam_tuning_name)
 
     run_paths = glob.glob(LOG_DIR + "/run*")
 
     runs = []
 
     fig, ax = plt.subplots()
-    fig.set_size_inches(10, 7, forward=True)
+    # fig.set_size_inches(10, 7, forward=True)
+    fig.set_size_inches(7, 5.7, forward=True)
     for run_path in run_paths:
         run = Run(run_path, os.path.exists(os.path.join(run_path, 'validation')))
         run.parse_events()
@@ -217,25 +233,43 @@ def main():
                       'evaluation_mean_absolute_error_vs_iterations', 'epoch_loss',
                       'epoch_mean_squared_error', 'epoch_mean_absolute_error'][0]
 
+    NUM_COLORS = 2 * len(runs)
+
+    cm = plt.get_cmap('tab10')
+    ax.set_prop_cycle('color', [cm(1. * i / NUM_COLORS) for i in range(NUM_COLORS)])
+
     for run in runs:
+        name = run.get_name()
+        # name = ''.join([name[:6], name[11:-6]])
+        name = ''.join([name[:6], name[11:]])
+
+
         ax.plot(run.get_train_data().get(which_train_plot).get_steps(),
-                smoothen(run.get_train_data().get(which_train_plot).get_values(), 25),
-                label=run.get_name())
+                smoothen(run.get_train_data().get(which_train_plot).get_values(), 40),
+                label=name)
         if run.does_validation_exist():
             ax.plot(run.get_val_data().get(which_val_plot).get_steps(),
-                    run.get_val_data().get(which_val_plot).get_values(),
-                    label=run.get_name() + " validation",
+                    smoothen(run.get_val_data().get(which_val_plot).get_values(), 2),
+                    label=name + " val",
                     ls='--')
-        ax.legend()
+        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.3),
+                ncol=2, fancybox=True, shadow=True)
         # plt.title(which_train_plot)
 
     # ax.set_yscale('log')
-    ax.set_ylim(0.15, 0.26)
+    # ax.set_ylim(0.15, 0.26)
+    # ax.set_ylim(0.13, 0.25) # DEFAULT FOR PLOTS !
+    ax.set_ylim(0.08, 0.28)
+
+    ax.set_xlim(left=0)
+
+
     ax.set_ylabel('Mean Squared Error')
     ax.set_xlabel('Batch')
     ax.tick_params(direction="in")
+    fig.subplots_adjust(bottom=0.25)
     fig.tight_layout()
-    plt.savefig(os.path.join(data_path, 'graphics', 'batch_mse.png'), dpi=300)
+    # plt.savefig(os.path.join(data_path, 'graphics', 'batch_mse.png'), dpi=300)
     plt.show()
 
 

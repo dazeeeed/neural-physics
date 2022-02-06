@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2021-12-08T20:44:19.336884</dc:date>
+    <dc:date>2022-01-08T21:52:43.733903</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -625,119 +625,6 @@ z
     <!-- 3 -->
     <g transform="translate(373.88454 183.33757)scale(0.15 -0.15)">
      <use xlink:href="#ArialMT-33"/>
-    </g>
-   </g>
-   <g id="legend_1">
-    <g id="patch_8">
-     <path d="M 380.947369 155.507812 
-L 474.777057 155.507812 
-Q 477.777057 155.507812 477.777057 152.507812 
-L 477.777057 26.7 
-Q 477.777057 23.7 474.777057 23.7 
-L 380.947369 23.7 
-Q 377.947369 23.7 377.947369 26.7 
-L 377.947369 152.507812 
-Q 377.947369 155.507812 380.947369 155.507812 
-z
-" style="fill:#ffffff;opacity:0.8;stroke:#cccccc;stroke-linejoin:miter;"/>
-    </g>
-    <g id="patch_9">
-     <path d="M 383.947369 40.436719 
-L 413.947369 40.436719 
-L 413.947369 29.936719 
-L 383.947369 29.936719 
-z
-" style="fill:#3c3c4c;"/>
-    </g>
-    <g id="text_13">
-     <!-- PWR -->
-     <g transform="translate(425.947369 40.436719)scale(0.15 -0.15)">
-      <use xlink:href="#ArialMT-50"/>
-      <use x="66.699219" xlink:href="#ArialMT-57"/>
-      <use x="161.083984" xlink:href="#ArialMT-52"/>
-     </g>
-    </g>
-    <g id="patch_10">
-     <path d="M 383.947369 61.654687 
-L 413.947369 61.654687 
-L 413.947369 51.154687 
-L 383.947369 51.154687 
-z
-" style="fill:#965f77;"/>
-    </g>
-    <g id="text_14">
-     <!-- BWR -->
-     <g transform="translate(425.947369 61.654687)scale(0.15 -0.15)">
-      <use xlink:href="#ArialMT-42"/>
-      <use x="66.699219" xlink:href="#ArialMT-57"/>
-      <use x="161.083984" xlink:href="#ArialMT-52"/>
-     </g>
-    </g>
-    <g id="patch_11">
-     <path d="M 383.947369 82.872656 
-L 413.947369 82.872656 
-L 413.947369 72.372656 
-L 383.947369 72.372656 
-z
-" style="fill:#b4a0aa;"/>
-    </g>
-    <g id="text_15">
-     <!-- PHWR -->
-     <g transform="translate(425.947369 82.872656)scale(0.15 -0.15)">
-      <use xlink:href="#ArialMT-50"/>
-      <use x="66.699219" xlink:href="#ArialMT-48"/>
-      <use x="138.916016" xlink:href="#ArialMT-57"/>
-      <use x="233.300781" xlink:href="#ArialMT-52"/>
-     </g>
-    </g>
-    <g id="patch_12">
-     <path d="M 383.947369 104.090625 
-L 413.947369 104.090625 
-L 413.947369 93.590625 
-L 383.947369 93.590625 
-z
-" style="fill:#d8c2cb;"/>
-    </g>
-    <g id="text_16">
-     <!-- LWGR -->
-     <g transform="translate(425.947369 104.090625)scale(0.15 -0.15)">
-      <use xlink:href="#ArialMT-4c"/>
-      <use x="48.240234" xlink:href="#ArialMT-57"/>
-      <use x="142.625" xlink:href="#ArialMT-47"/>
-      <use x="220.408203" xlink:href="#ArialMT-52"/>
-     </g>
-    </g>
-    <g id="patch_13">
-     <path d="M 383.947369 125.308594 
-L 413.947369 125.308594 
-L 413.947369 114.808594 
-L 383.947369 114.808594 
-z
-" style="fill:#fed542;"/>
-    </g>
-    <g id="text_17">
-     <!-- GCR -->
-     <g transform="translate(425.947369 125.308594)scale(0.15 -0.15)">
-      <use xlink:href="#ArialMT-47"/>
-      <use x="77.783203" xlink:href="#ArialMT-43"/>
-      <use x="150" xlink:href="#ArialMT-52"/>
-     </g>
-    </g>
-    <g id="patch_14">
-     <path d="M 383.947369 146.526562 
-L 413.947369 146.526562 
-L 413.947369 136.026562 
-L 383.947369 136.026562 
-z
-" style="fill:#fed5c4;"/>
-    </g>
-    <g id="text_18">
-     <!-- FBR -->
-     <g transform="translate(425.947369 146.526562)scale(0.15 -0.15)">
-      <use xlink:href="#ArialMT-46"/>
-      <use x="61.083984" xlink:href="#ArialMT-42"/>
-      <use x="127.783203" xlink:href="#ArialMT-52"/>
-     </g>
     </g>
    </g>
   </g>

@@ -31,12 +31,12 @@ class CoreConfiguration():
         # put random variables from vector into configuration
         core_config[1:9, 8] = vector[:8]
         core_config[1:8, 9] = vector[8:15]
-        core_config[1:7, 10] = vector[16:22]
+        core_config[1:7, 10] = vector[16:22]    # ERROR ! column 15 is missing
         core_config[1:6, 11] = vector[22:27]
         core_config[2:5, 12] = vector[27:30]
         core_config[2:4, 13] = vector[30:]
 
-        # add reflectors (10) 
+        # add reflectors (10)
         core_config[0, 8:13] = 10
         core_config[1, 12:15] = 10
         core_config[2, 14] = 10
