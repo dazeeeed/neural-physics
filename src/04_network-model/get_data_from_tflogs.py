@@ -212,7 +212,7 @@ def main():
     current_path = os.path.dirname(os.path.realpath("__file__"))
     data_path = os.path.abspath(os.path.join(current_path, '..', '..', 'data'))
 
-    hparam_tuning_name = 'hparam_tuning_2022-01-27-12-47-25'
+    hparam_tuning_name = 'hparam_tuning_2022-01-26-22-54-24'
     LOG_DIR = os.path.join(data_path, 'logs', hparam_tuning_name)
 
     run_paths = glob.glob(LOG_DIR + "/run*")
@@ -221,7 +221,10 @@ def main():
 
     fig, ax = plt.subplots()
     # fig.set_size_inches(10, 7, forward=True)
-    fig.set_size_inches(7, 5.7, forward=True)
+    # fig.set_size_inches(7, 5.7, forward=True)
+    fig.set_size_inches(7, 9, forward=True)
+
+
     for run_path in run_paths:
         run = Run(run_path, os.path.exists(os.path.join(run_path, 'validation')))
         run.parse_events()
@@ -252,22 +255,25 @@ def main():
                     smoothen(run.get_val_data().get(which_val_plot).get_values(), 2),
                     label=name + " val",
                     ls='--')
-        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.3),
-                ncol=2, fancybox=True, shadow=True)
+        # ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.3),
+        ax.legend(loc='lower center', bbox_to_anchor=(0.5, -0.6),
+
+                      ncol=2, fancybox=True, shadow=True)
         # plt.title(which_train_plot)
 
     # ax.set_yscale('log')
     # ax.set_ylim(0.15, 0.26)
-    # ax.set_ylim(0.13, 0.25) # DEFAULT FOR PLOTS !
-    ax.set_ylim(0.08, 0.28)
+    ax.set_ylim(0.13, 0.25) # DEFAULT FOR PLOTS !
+    # ax.set_ylim(0.08, 0.28)
 
     ax.set_xlim(left=0)
-
 
     ax.set_ylabel('Mean Squared Error')
     ax.set_xlabel('Batch')
     ax.tick_params(direction="in")
+    # fig.subplots_adjust(bottom=0.25)
     fig.subplots_adjust(bottom=0.25)
+
     fig.tight_layout()
     # plt.savefig(os.path.join(data_path, 'graphics', 'batch_mse.png'), dpi=300)
     plt.show()

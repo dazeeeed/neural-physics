@@ -146,65 +146,65 @@ def main():
     # print("Pearson correlation: ", np.corrcoef(data_real, data_pred))
 
     # # UNCOMMENT BELOW FOR PLOT OF RHO PROGRESS
-    # what_to_plot = labels[1:-1]
-    # data_real = data.get([label + '_real' for label in what_to_plot]).iloc[0, :].to_numpy()
-    # data_pred = data.get([label + '_pred' for label in what_to_plot]).iloc[0, :].to_numpy()
-    #
-    # ax.plot(days, data_real, label="Dane rzeczywiste", lw=4, ls='--', color='tab:blue')
-    # ax.plot(days, data_pred, label="Przewidywanie", lw=2, ls='-', color='tab:orange')
-    #
-    # stddev_pred = np.std(data.get([label + '_real' for label in what_to_plot]).iloc[:, :].to_numpy(), axis=0)
-    # ax.fill_between(days, data_pred-stddev_pred, data_pred+stddev_pred, alpha=0.3, color='tab:orange')
-    #
-    # # ENG
-    # # ax.set_xlabel("Days")
-    # # ax.set_ylabel("Reactivity")
-    # # plt.title("Progression of reactivity prediction")
+    what_to_plot = labels[1:-1]
+    data_real = data.get([label + '_real' for label in what_to_plot]).iloc[0, :].to_numpy()
+    data_pred = data.get([label + '_pred' for label in what_to_plot]).iloc[0, :].to_numpy()
+
+    ax.plot(days, data_real, label="Real data", lw=4, ls='--', color='tab:blue')
+    ax.plot(days, data_pred, label="Prediction", lw=2, ls='-', color='tab:orange')
+
+    stddev_pred = np.std(data.get([label + '_real' for label in what_to_plot]).iloc[:, :].to_numpy(), axis=0)
+    ax.fill_between(days, data_pred-stddev_pred, data_pred+stddev_pred, alpha=0.3, color='tab:orange')
+
+    # ENG
+    ax.set_xlabel("Days")
+    ax.set_ylabel("Reactivity")
+    plt.title("Progression of reactivity prediction")
     # # PL
     # ax.set_xlabel("Dzień")
     # ax.set_ylabel("Reaktywność")
     # plt.title("Przewidywanie progresji reaktywności w czasie")
-    # ax.grid(True, ls=':')
-    # ax.legend()
+    ax.grid(True, ls=':')
+    ax.legend()
 
     # # UNCOMMENT BELOW FOR HISTOGRAM
-    what_to_plot = labels[-1]
-    data_real = data[what_to_plot + "_real"]
-    data_pred = data[what_to_plot + "_pred"]
-    # ax.set_xlabel("Cycle length [days]")
-    # ax.set_ylabel("Density")
-    ax.set_xlabel("Długość cyklu pracy [dni]")
-    ax.set_ylabel("Gęstość prawdopodobieństwa")
-    _, bins_real, _ = ax.hist(data_real, bins=30, density=True, label="Dane rzeczywiste", alpha=0.3, color="orange")
-    _, bins_pred, _ = ax.hist(data_pred, bins=30, density=True, label="Przewidywanie", alpha=0.3, color="dodgerblue")
-    ax.legend()
-    ax.grid(True, ls=':')
-    # plt.title("Length of fuel cycle")
-
-    mu_real, sigma_real = stats.norm.fit(data_real)
-    best_fit_line_real = stats.norm.pdf(bins_real, mu_real, sigma_real)
-    mu_pred, sigma_pred = stats.norm.fit(data_pred)
-    best_fit_line_pred = stats.norm.pdf(bins_pred, mu_pred, sigma_pred)
-
-    ax.plot(bins_real, best_fit_line_real, linewidth=3, color="orange")
-    ax.plot(bins_pred, best_fit_line_pred, linewidth=3, color="dodgerblue")
-    fig.text(0.17,
-             0.83,
-             rf"Real: $\mu=${mu_real:.2f} $\sigma$={sigma_real:.2f}" + "\n"
-                                                                       rf"Predicted: $\mu=${mu_pred:.2f} $\sigma$={sigma_pred:.2f}",
-             style='italic',
-             fontsize=15,
-             bbox={'facecolor': 'grey', 'alpha': 0.1, 'pad': 10})
+    # what_to_plot = labels[-1]
+    # data_real = data[what_to_plot + "_real"]
+    # data_pred = data[what_to_plot + "_pred"]
+    # # ax.set_xlabel("Cycle length [days]")
+    # # ax.set_ylabel("Density")
+    # ax.set_xlabel("Długość cyklu pracy [dni]")
+    # ax.set_ylabel("Gęstość prawdopodobieństwa")
+    # _, bins_real, _ = ax.hist(data_real, bins=30, density=True, label="Dane rzeczywiste", alpha=0.3, color="orange")
+    # _, bins_pred, _ = ax.hist(data_pred, bins=30, density=True, label="Przewidywanie", alpha=0.3, color="dodgerblue")
+    # ax.legend()
+    # ax.grid(True, ls=':')
+    # # plt.title("Length of fuel cycle")
+    #
+    # mu_real, sigma_real = stats.norm.fit(data_real)
+    # best_fit_line_real = stats.norm.pdf(bins_real, mu_real, sigma_real)
+    # mu_pred, sigma_pred = stats.norm.fit(data_pred)
+    # best_fit_line_pred = stats.norm.pdf(bins_pred, mu_pred, sigma_pred)
+    #
+    # ax.plot(bins_real, best_fit_line_real, linewidth=3, color="orange")
+    # ax.plot(bins_pred, best_fit_line_pred, linewidth=3, color="dodgerblue")
+    # fig.text(0.17,
+    #          0.83,
+    #          rf"Real: $\mu=${mu_real:.2f} $\sigma$={sigma_real:.2f}" + "\n"
+    #                                                                    rf"Predicted: $\mu=${mu_pred:.2f} $\sigma$={sigma_pred:.2f}",
+    #          style='italic',
+    #          fontsize=15,
+    #          bbox={'facecolor': 'grey', 'alpha': 0.1, 'pad': 10})
 
     error = Error(data_real, data_pred)
     error.print()
 
-    # fig.text(0.65,
-    #          0.175,
-    #          f'Mean absolute error: {error.get_absolute():.4f}\nMean relative error: {error.get_percentage():.2f}%',
-    #          style='italic',
-    #          fontsize=15,
-    #          bbox={'facecolor': 'grey', 'alpha': 0.1, 'pad': 10})
+    fig.text(0.15,
+             0.175,
+             f'Mean absolute error: {error.get_absolute():.4f}\nMean relative error: {error.get_percentage():.2f}%',
+             style='italic',
+             fontsize=15,
+             bbox={'facecolor': 'grey', 'alpha': 0.1, 'pad': 10})
 
     fig.tight_layout()
     ax.tick_params(direction="in")

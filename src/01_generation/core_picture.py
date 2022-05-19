@@ -27,6 +27,7 @@ def main():
     ax1.set_yticks(np.arange(0, 17, 2))
     ax2.set_xticks(np.arange(0, 17, 2))
     ax2.set_yticks(np.arange(0, 17, 2))
+    fig.tight_layout()
     plt.show()
 
 
