@@ -12,7 +12,7 @@ parameters and their dependence on core loading patterns. For instance, the leng
 with good accuracy (>99\%). This work contributes to the exploration of the usefulness of neural networks in solving nuclear reactor physics problems, and in the future 
 can be used to support the design of reactor cores.  
 
-![Core configurations](https://github.com/dazeeeed/neural-physics/blob/main/data/graphics/generated_cores.pdf)
+![Core configurations](https://github.com/dazeeeed/neural-physics/blob/main/data/graphics/generated_cores.png)
 
 ## Technologies 
 <img src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" /> <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=TensorFlow&logoColor=white" /> <img src="https://img.shields.io/badge/Numpy-777BB4?style=for-the-badge&logo=numpy&logoColor=white" />
@@ -20,9 +20,9 @@ can be used to support the design of reactor cores.
 
 
 ## Sample predictions
-![Reactivity vs days](https://github.com/dazeeeed/neural-physics/blob/main/data/graphics/reactivity_vs_days.pdf)
+![Reactivity vs days](https://github.com/dazeeeed/neural-physics/blob/main/data/graphics/reactivity_vs_days.png)
 
-![Cycle length](https://github.com/dazeeeed/neural-physics/blob/main/data/graphics/cycle_length.pdf)
+![Cycle length](https://github.com/dazeeeed/neural-physics/blob/main/data/graphics/cycle_length.png)
 
 
 ## License
